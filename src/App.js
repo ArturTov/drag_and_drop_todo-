@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Toaster } from "react-hot-toast";
+import CreateTask from "./components/CreateTask";
+import ListTask from "./components/ListTask";
+import { Light, Moon } from "./assect";
+import "./App.scss";
 
 function App() {
+  const [theme, setTheme] = useState("light");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="App" data-theme={theme}>
+        <div className="them_icon">
+          <div
+            className="theme-svg"
+            onClick={() => {
+              if (theme === "light") {
+                return setTheme("dark");
+              }
+              return setTheme("light");
+            }}>
+            {theme === "light" ? <Light /> : <Moon />}
+          </div>
+        </div>
+        <Toaster
+          position="bottom-right"
+          reverseOrder={false}
+          containerClassName=""
+        />
+        <div className="flex">
+          <CreateTask theme={theme} />
+          <ListTask />
+        </div>
+      </div>
+      ;
+    </DndProvider>
   );
 }
 
