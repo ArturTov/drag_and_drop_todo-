@@ -108,7 +108,7 @@ const Task = ({ task }) => {
   };
   const handleSubmite = () => {
     if (value.length <= 3) {
-      return toast.error("Somting errr", {
+      return toast.error("Լine must contain more than three characters", {
         border: "1px solid #713200",
         padding: "16px",
         color: "#713200",
