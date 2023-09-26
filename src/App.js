@@ -16,9 +16,7 @@ function App() {
     } else {
       setTheme("light");
     }
-    console.log(darkModeMatcher);
   }, []);
-  console.log(theme, "theme");
 
   return (
     <DndProvider backend={HTML5Backend}>
