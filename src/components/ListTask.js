@@ -20,7 +20,6 @@ export default function ListTask() {
       complited: task.filter((el) => el.status === "complited"),
     };
   }, [task]);
-  console.log(task, taskselm);
 
   return (
     <div className="flex_container">
@@ -31,7 +30,6 @@ export default function ListTask() {
   );
 }
 const Section = ({ child, status }) => {
-  console.log(child, status);
   const dispatch = useDispatch();
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
@@ -69,7 +67,6 @@ const Section = ({ child, status }) => {
       },
     });
   };
-  // console.log(isOver);
   return (
     <div ref={drop} className={`section_container ${isOver ? "isOver" : ""} `}>
       <Header {...sectionValue} />

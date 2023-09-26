@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Toaster } from "react-hot-toast";
@@ -9,6 +9,17 @@ import "./App.scss";
 
 function App() {
   const [theme, setTheme] = useState("light");
+  useEffect(() => {
+    const darkModeMatcher = window.matchMedia("(prefers-color-scheme: dark)");
+    if (darkModeMatcher.matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+    console.log(darkModeMatcher);
+  }, []);
+  console.log(theme, "theme");
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="App" data-theme={theme}>
@@ -34,7 +45,6 @@ function App() {
           <ListTask />
         </div>
       </div>
-      ;
     </DndProvider>
   );
 }
