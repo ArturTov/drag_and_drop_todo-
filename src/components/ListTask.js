@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
 import toast from "react-hot-toast";
@@ -8,10 +8,18 @@ import {
   setEditTodo,
 } from "../redux/actions/itemActions";
 import { ArrowSVG, DeleteSVG, EditSVG } from "../assect";
+import { ThemeContext } from "../context";
 
 const status = ["todo", "inprocess", "complited"];
 export default function ListTask() {
   const task = useSelector((state) => state.todo.items);
+  const [items, setItems] = useState(status);
+  const moveItem = (fromIndex, toIndex) => {
+    const updatedItems = [...items];
+    const [movedItem] = updatedItems.splice(fromIndex, 1);
+    updatedItems.splice(toIndex, 0, movedItem);
+    setItems(updatedItems);
+  };
 
   const taskselm = useMemo(() => {
     return {
@@ -23,12 +31,37 @@ export default function ListTask() {
 
   return (
     <div className="flex_container">
-      {status.map((el) => (
-        <Section child={taskselm[el]} key={el} status={el} />
+      {items.map((el, i) => (
+        <DraggableItem index={i} moveItem={moveItem} key={el}>
+          <Section
+            child={taskselm[el]}
+            index={i}
+            status={el}
+            moveItem={moveItem}
+          />
+        </DraggableItem>
       ))}
     </div>
   );
 }
+const DraggableItem = ({ index, moveItem, children }) => {
+  const [, ref] = useDrag({
+    type: "section",
+    item: { index },
+  });
+
+  const [, drop] = useDrop({
+    accept: "section",
+    hover: (draggedItem) => {
+      if (draggedItem.index !== index) {
+        moveItem(draggedItem.index, index);
+        draggedItem.index = index;
+      }
+    },
+  });
+
+  return <div ref={(node) => ref(drop(node))}>{children}</div>;
+};
 const Section = ({ child, status }) => {
   const dispatch = useDispatch();
   const [{ isOver }, drop] = useDrop(() => ({
@@ -36,6 +69,7 @@ const Section = ({ child, status }) => {
     drop: (item) => {
       addItemToSection(item.id);
     },
+
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -69,21 +103,23 @@ const Section = ({ child, status }) => {
   };
   return (
     <div ref={drop} className={`section_container ${isOver ? "isOver" : ""} `}>
-      <Header {...sectionValue} />
+      <Header {...sectionValue} status={status} />
       {child?.map((el) => (
         <Task key={el.id} task={el} status={status} />
       ))}
     </div>
   );
 };
-const Header = ({ text, bg, length }) => {
+const Header = ({ text, bg, length, status }) => {
   return (
-    <div className={`section_header ${bg ? bg : ""}`}>
+    <div className={`section_header ${bg ? bg : ""}`} data-status={status}>
       {text} <span className="ml-1"> {length}</span>
     </div>
   );
 };
 const Task = ({ task }) => {
+  const theme = useContext(ThemeContext);
+  console.log(theme);
   const [isOpenslect, setIsOpenSelect] = useState(false);
   const [value, setValue] = useState(task.name);
   const ref = useRef(null);
@@ -125,10 +161,14 @@ const Task = ({ task }) => {
     setIsEdit(false);
   };
   return (
-    <div ref={drag} className={`section_task ${isDragging && "opacit"}`}>
+    <div
+      ref={drag}
+      data-status={task.status}
+      className={`section_task ${isDragging && "opacit"}`}>
       {isEdit && task.status === "todo" ? (
         <div>
           <input
+            data-theme={theme}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 ref.current.click();
@@ -140,7 +180,11 @@ const Task = ({ task }) => {
             }}
             className="task_input"
           />
-          <button ref={ref} onClick={handleSubmite} className=" task_button">
+          <button
+            ref={ref}
+            onClick={handleSubmite}
+            data-theme={theme}
+            className=" task_button">
             Change
           </button>
         </div>
