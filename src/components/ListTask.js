@@ -119,7 +119,6 @@ const Header = ({ text, bg, length, status }) => {
 };
 const Task = ({ task }) => {
   const theme = useContext(ThemeContext);
-  console.log(theme);
   const [isOpenslect, setIsOpenSelect] = useState(false);
   const [value, setValue] = useState(task.name);
   const ref = useRef(null);
