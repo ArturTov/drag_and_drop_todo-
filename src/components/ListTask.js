@@ -111,8 +111,12 @@ const Section = ({ child, status }) => {
   );
 };
 const Header = ({ text, bg, length, status }) => {
+  const theme = useContext(ThemeContext);
   return (
-    <div className={`section_header ${bg ? bg : ""}`} data-status={status}>
+    <div
+      className={`section_header ${bg ? bg : ""}`}
+      data-status={status}
+      data-theme={theme}>
       {text} <span className="ml-1"> {length}</span>
     </div>
   );
@@ -131,7 +135,7 @@ const Task = ({ task }) => {
       isDragging: !!monitor.isDragging(),
     }),
   }));
-  const chsngeStatus = (elemnt) => {
+  const changeStatus = (elemnt) => {
     const index = status.indexOf(elemnt.status);
     if (index + 1 === status.length) {
       return toast.error("Somting errr", {
@@ -163,6 +167,7 @@ const Task = ({ task }) => {
     <div
       ref={drag}
       data-status={task.status}
+      data-theme={theme}
       className={`section_task ${isDragging && "opacit"}`}>
       {isEdit && task.status === "todo" ? (
         <div>
@@ -210,7 +215,7 @@ const Task = ({ task }) => {
                 style={{ marginTop: "8px" }}
                 className="svg"
                 onClick={() => {
-                  chsngeStatus(task);
+                  changeStatus(task);
                 }}>
                 <ArrowSVG />
               </div>

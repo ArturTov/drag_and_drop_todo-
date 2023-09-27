@@ -123,13 +123,22 @@ body{
   background-color: #ababab;
   color: #fff;
   &[data-status="todo"]{
-    background: linear-gradient(135deg, #1218ba 0%, #000000 100%)
+    background: linear-gradient(135deg, #1218ba 0%, #4f4343 100%);
+    &[data-theme="dark"]{
+      background: linear-gradient(135deg, #1218ba 0%, #000000 100%)
+    };
   };
   &[data-status="inprocess"]{
-    background: linear-gradient(135deg, #ba1212 0%, #2e0505 100%)
+    background: linear-gradient(135deg, #ba1212 0%, #4f4343 100%);
+    &[data-theme="dark"]{
+      background: linear-gradient(135deg, #ba1212 0%, #000000 100%)
+    };
   };
   &[data-status="complited"]{
-    background: linear-gradient(135deg, #09341e 0%, #226e21 100%)
+    background: linear-gradient(135deg, #09341e 0%, #4f4343 100%);
+    &[data-theme="dark"]{
+      background: linear-gradient(135deg, #09341e 0%, #000000 100%)
+    };
   };
 
 }
@@ -143,13 +152,22 @@ body{
   padding: 1.25rem 8px 1.25rem 8px;
   background-color:#c4c4c4; 
   &[data-status="todo"]{
-    background: linear-gradient(135deg, #1218ba 0%, #000000 100%)
+    background: linear-gradient(135deg, #1218ba 0%, #4f4343 100%);
+    &[data-theme="dark"]{
+      background: linear-gradient(135deg, #1218ba 0%, #000000 100%)
+    };
   };
   &[data-status="inprocess"]{
-    background: linear-gradient(135deg, #ba1212 0%, #2e0505 100%)
+    background: linear-gradient(135deg, #ba1212 0%, #4f4343 100%);
+    &[data-theme="dark"]{
+      background: linear-gradient(135deg, #ba1212 0%, #000000 100%)
+    };
   };
   &[data-status="complited"]{
-    background: linear-gradient(135deg, #09341e 0%, #226e21 100%)
+    background: linear-gradient(135deg, #09341e 0%, #4f4343 100%);
+    &[data-theme="dark"]{
+      background: linear-gradient(135deg, #09341e 0%, #000000 100%)
+    };
   };
   &.opacity{
     cursor:grabbing;
